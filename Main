@@ -1,0 +1,63 @@
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        ShoppingCart cart = new ShoppingCart();
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n==== Shopping Cart Menu ====");
+            System.out.println("1. Add Item");
+            System.out.println("2. Remove Item");
+            System.out.println("3. Update Quantity");
+            System.out.println("4. Show Cart");
+            System.out.println("5. Calculate Total");
+            System.out.println("6. Save Cart to File");
+            System.out.println("0. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+            sc.nextLine();  
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter item name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Enter price: ");
+                    double price = sc.nextDouble();
+                    System.out.print("Enter quantity: ");
+                    int qty = sc.nextInt();
+                    cart.addItem(name, price, qty);
+                    break;
+                case 2:
+                    System.out.print("Enter item name to remove: ");
+                    String removeName = sc.nextLine();
+                    cart.removeItem(removeName);
+                    break;
+                case 3:
+                    System.out.print("Enter item name to update: ");
+                    String updateName = sc.nextLine();
+                    System.out.print("Enter new quantity: ");
+                    int newQty = sc.nextInt();
+                    cart.updateQuantity(updateName, newQty);
+                    break;
+                case 4:
+                    cart.showCart();
+                    break;
+                case 5:
+                    System.out.println("🧾 Total price: ₹" + cart.calculateTotal());
+                    break;
+                case 6:
+                    cart.saveToFile();
+                    break;
+                case 0:
+                    System.out.println("👋 Exiting...");
+                    break;
+                default:
+                    System.out.println("⚠ Invalid choice.");
+            }
+
+        } while (choice != 0);
+        sc.close();
+    }
+}
