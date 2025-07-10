@@ -1,0 +1,117 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.LinkedList;
+
+class Item {
+    String name;
+    double price;
+    int quantity;
+
+    Item(String name, double price, int quantity) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    double getTotal() {
+        return price * quantity;
+    }
+
+    public String toString() {
+        return name + " | Price: ₹" + price + " | Qty: " + quantity + " | Total: ₹" + getTotal();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+}
+
+class ShoppingCart {
+    LinkedList<Item> cart = new LinkedList<>();
+
+    void addItem(String name, double price, int quantity) {
+        cart.add(new Item(name, price, quantity));
+        System.out.println("✔ Item added.");
+    }
+
+    void removeItem(String name) {
+        boolean removed = false;
+        for (int i = 0; i < cart.size(); i++) {
+            if (cart.get(i).name.equalsIgnoreCase(name)) {
+                cart.remove(i);
+                removed = true;
+                System.out.println("❌ Item removed.");
+                break;
+            }
+        }
+        if (!removed) {
+            System.out.println("⚠ Item not found.");
+        }
+    }
+
+    void updateQuantity(String name, int newQty) {
+        for (Item item : cart) {
+            if (item.name.equalsIgnoreCase(name)) {
+                item.quantity = newQty;
+                System.out.println("🔁 Quantity updated.");
+                return;
+            }
+        }
+        System.out.println("⚠ Item not found.");
+    }
+
+    double calculateTotal() {
+        double total = 0;
+        for (Item item : cart) {
+            total += item.getTotal();
+        }
+        return total;
+    }
+
+    void showCart() {
+        if (cart.isEmpty()) {
+            System.out.println("🛒 Cart is empty.");
+            return;
+        }
+
+        System.out.println("\n🛍️ Cart Items:");
+        for (Item item : cart) {
+            System.out.println(item);
+        }
+        System.out.println("🧾 Total Price: ₹" + calculateTotal());
+    }
+
+    void saveToFile() {
+        try {
+            FileWriter writer = new FileWriter("cart.txt");
+            for (Item item : cart) {
+                writer.write(item.toString() + "\n");
+            }
+            writer.write("Total: ₹" + calculateTotal() + "\n");
+            writer.close();
+            System.out.println("📁 Cart saved to cart.txt");
+        } catch (IOException e) {
+            System.out.println("❌ Error saving file: " + e.getMessage());
+        }
+    }
+}
